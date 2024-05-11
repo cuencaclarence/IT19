@@ -1,13 +1,105 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.brand-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.brand-card {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    box-sizing: border-box;
+    border-radius: 6px;
+    position: relative;
+}
+
+
+.cursor{
+    cursor: pointer;
+}
+
+.button_choice{
+    
+    background-color: rgb(44, 44, 44);
+    margin-top: 4px;
+    font-size: 17px;
+    font-weight: 700;
+    color: rgb(255, 255, 255);
+    padding: 4px 20px;
+    
+    
+    
+}
+.button_choice:hover{
+    background-color: rgb(93, 88, 88);
+}
+
+.container_choice{
+    margin: auto;
+    background-color: white;
+    text-align: center;
+    width: 200px;
+    padding: 15px 10px;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.gridDealer{
+    display: grid;
+    grid-template-columns: 350px 1fr;
+}
+
+.back1{
+    background-color: rgb(55, 54, 54);
+}
+
+/* .navButton{
+    background-color: rgba(25, 25, 25, 0.692);
+    margin-left: 5px;
+    padding: 5px 30px;
+    border-radius: 3px;
+    color: white;
+    font-weight: 500;
+} */
+/* .navButton:hover{
+    background-color: black;
+} */
+
+.navButton2{
+    margin-left: 10px;
+    border-radius: 4px;
+    font-weight: 500;
+    
+}
+
+.containerH{
+    overflow: hidden;
+}
+
+
+.profile{
+    align-items: center;
+    padding: 0px 50px;
+    color: white;
+}
+.profile-pic{
+    width: 100px;
+    border-radius: 50px;
+    align-items: center;
+   margin: auto;
+   margin-top: 20px;
+}
+
+.navButton{
+    background-color: rgb(61, 61, 61);
+}
+
+.activeButton{
+    background-color: rgb(23, 23, 23);
 }

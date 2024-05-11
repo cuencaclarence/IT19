@@ -1,0 +1,124 @@
+.background{
+    background-image: url('../images//pic\ 1.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.backgoundTransparent{
+    background-color: rgba(40, 40, 40, 0.955);
+    padding: 80px 30px 30px 30px;
+    border-radius: 10px;
+    margin: 20px 30px;
+    height: 73.3vh;
+    
+}
+
+.inActiveButton{
+    color: rgb(83, 83, 83);
+    font-size: 19px;
+    font-weight: 500;
+    width: 100px;
+    border: 1px solid white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    padding: 4px 10px;
+}
+
+.navActiveButton{
+    color: rgb(255, 255, 255);
+    font-size: 19px;
+    font-weight: 500;
+    width: 100px;
+    border: 1px solid white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    padding: 4px 10px;
+    background-color: rgba(39, 39, 39, 0.721);
+}
+.loginButton{
+    display: flex;
+    justify-content: center;
+    padding: 4px 10px;
+    width: 150px;
+    font-size: 19px;
+    font-weight: 500;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+}
+.loginButton:hover{
+    background-color: rgb(62, 62, 62);
+}
+
+.color{
+    color: rgb(0, 0, 0);
+}
+
+.box1{
+    background-color: rgba(20, 20, 20, 0.789);
+    color: white;
+    width: 130px;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.grid2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.list{
+    list-style: none;
+    
+  
+    padding: 10px 0;
+    margin-top: 10px;
+    margin-left: 30px;
+    
+}
+
+.border{
+    border-top: 2px solid rgb(179, 179, 179);
+    border-bottom: 2px solid rgb(179, 179, 179);
+    margin-top: 10px;
+}
+
+.box2{
+    margin-left: 1px;
+    align-items: center;
+    display: flex;
+    
+}
+
+
+.footer{
+    background-color: rgb(72, 70, 73);
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 50px 5px;
+}
+
+.buy{
+    background-color: green;
+    padding: 10px 100px;
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 10px;
+    margin-top: 50px;
+}
+
+
+.grid7{
+    display: grid;
+    grid-template-columns: 250px 150px 150px 100px 100px 200px 1fr;
+}
