@@ -23,7 +23,7 @@ import Records from "./pages/userPage/Records";
 
 import LoginAdmin from './pages/Admin/Login'
 import AdminDashboard from './pages/Admin/Dashboard'
-
+import ChartColumn from "./pages/Admin/content/ChartColumn";
 
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
           <Route path="/admin-login" element={<LoginAdmin />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
         
-          <Route path="/" element={<LoginChoice />} /> 
+          <Route path="/" element={<ChartColumn />} /> 
 
           <Route path="/dealer-login" element={<LoginDealer />} /> 
           <Route path="/dashboardDealer" element={<DashboardDealer />} /> 

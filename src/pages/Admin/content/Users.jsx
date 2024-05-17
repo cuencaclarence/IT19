@@ -4,28 +4,20 @@ import supabase from '../../../config/supabaseClient'
 export default function Users() {
 
   const [customers, setCustomers] = useState(null)
-  const [fetchError, setFetchError] = useState(null)
   const [customerCount, setCustomerCount] = useState(0)
 
-  useEffect (() => {
-    const fetchCustomers = async () => {
-      const {data, error} = await supabase
-      .from('customers')
-      .select()
-
-      if (error) {
-        setFetchError('error')
-      }
-
-      if (data) {
-        setCustomers(data)
-        setFetchError(null)
-        console.log(data)
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/customersAll')
+      .then(response => response.json())
+      .then(data => {
+        setCustomers(data);
         setCustomerCount(data.length)
-      } 
-    }
-    fetchCustomers()
-  }, [])
+      })
+      .catch(error => {
+        console.error('Error fetching customer data:', error);
+      });
+  }, []);
+
 
 
   return (
@@ -51,7 +43,7 @@ export default function Users() {
           <tbody>
             {customers.map((customer, index) => (
               <tr className='text-white border py-3' key={index}>
-                <td className='text-center'>{customer.customer_id}</td>
+                <td className='text-center'>{customer.id}</td>
                 <td className='pl-3'>{customer.name}</td>
                 <td className='pl-3'>{customer.address}</td>
                 <td className='text-center'>{customer.phone}</td>

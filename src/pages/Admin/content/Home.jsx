@@ -17,56 +17,47 @@ export default function Home() {
   const [defectiveCount, setDefectiveCount] = useState(null)
   const [salesCount, setSalesCount] = useState(null)
 
-
   useEffect(() => {
-    const fetchDealers = async () => {
-      const {data, error} = await supabase
-      .from('dealers')
-      .select()
+    fetch('http://127.0.0.1:8000/api/salesAll')
+      .then(response => response.json())
+      .then(data => {
+        setSalesCount(data.length);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
-      if(data) {
-        setDealersCount(data.length)
-       
-      }
+    fetch('http://127.0.0.1:8000/api/customersAll')
+      .then(response => response.json())
+      .then(data => {
+        setCustomerCount(data.length);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
-    }
-    const fetchBrands = async () => {
-      const {data, error} = await supabase
-      .from('brands')
-      .select()
+    fetch('http://127.0.0.1:8000/api/brandsAll')
+      .then(response => response.json())
+      .then(data => {
+        setBrandsCount(data.length);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
-      if(data) {
-        setBrandsCount(data.length)
-       
-      }
-    }
-    const fetchCustomer = async () => {
-      const {data, error} = await supabase
-      .from('customers')
-      .select()
-
-      if(data) {
-        setCustomerCount(data.length)
-        
-      }
-    }
-    const fetchSales = async () => {
-      const {data, error} = await supabase
-      .from('sales')
-      .select()
-
-      if(data) {
-        setSalesCount(data.length)
-       
-      }
-    }
+    fetch('http://127.0.0.1:8000/api/dealersAll')
+      .then(response => response.json())
+      .then(data => {
+        setDealersCount(data.length);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+    });
 
 
-    fetchDealers()
-    fetchBrands()
-    fetchCustomer()
-    fetchSales()
-  },[])
+
+
+  }, []);
 
   return (
     <div>

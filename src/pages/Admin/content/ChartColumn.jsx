@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 import supabase from '../../../config/supabaseClient';
 
-import ChartColumn from './ChartColumn';
-
-export default function Sales() {
+export default function ChartColumn() {
   const [salesByBrand, setSalesByBrand] = useState([]);
   const [sales, setSales] = useState(null);
   const [salesCount, setSalesCount] = useState(0);
@@ -18,28 +16,6 @@ export default function Sales() {
     5: 'Ford',
     // Add more mappings as needed
   };
-
-  // Initialize an object to store the count of sales for each brand
-  const brandSalesCount = {};
-
-  // Iterate over the salesData array
-  if (sales) {
-    sales.forEach(sale => {
-      // Extract the brand_id from the sale object
-      const brandId = sale.brand_id;
-
-      // Retrieve the corresponding brand name from the brandMapping object
-      const brandName = brandMapping[brandId];
-
-      // Increment the count of sales for the corresponding brand
-      brandSalesCount[brandName] = (brandSalesCount[brandName] || 0) + 1;
-    });
-  }
-
-  // Convert the brandSalesCount object into an array of arrays suitable for the chart data
-  const chartData = Object.entries(brandSalesCount)
-    .sort(([, countA], [, countB]) => countB - countA) // Sort by total sales count in descending order
-    .map(([brandName, totalSales]) => [brandName, totalSales]);
 
   useEffect(() => {
     Promise.all([
@@ -71,13 +47,9 @@ export default function Sales() {
         console.error('Error fetching data:', error);
       });
   }, []);
-  
-
-  console.log(sales)
 
   useEffect(() => {
     if (sales && sales.length > 0) {
-      // Count the number of sales for each brand on each date
       const salesByBrandAndDate = sales.reduce((acc, curr) => {
         const { date, brand_id } = curr;
         if (!acc[date]) {
@@ -90,7 +62,6 @@ export default function Sales() {
         return acc;
       }, {});
 
-      // Format data for chart
       const chartData = Object.entries(salesByBrandAndDate).map(([date, brandCounts]) => {
         const data = [date];
         Object.values(brandCounts).forEach(count => {
@@ -102,23 +73,37 @@ export default function Sales() {
       setSalesByBrand(chartData);
     }
   }, [sales]);
-  
 
-  console.log(sales)
+  const salesByBrandAndMonth = {};
 
-  console.log(chartData)
+  sales && sales.forEach(sale => {
+    const date = new Date(sale.date);
+    const month = date.toLocaleString('default', { month: 'long' });
+    if (!salesByBrandAndMonth[month]) {
+      salesByBrandAndMonth[month] = {};
+    }
+    const brandId = sale.brand_id;
+    salesByBrandAndMonth[month][brandId] = (salesByBrandAndMonth[month][brandId] || 0) + 1;
+  });
 
-  
-  const lineChartData = sales
-    ? sales.map((sale, index) => [sale.sale_date, index + 1])
-    : [];
+  const chartData1 = [['Month', ...Object.keys(brandMapping)]];
+
+  Object.keys(salesByBrandAndMonth).forEach(month => {
+    const rowData = [month];
+    Object.keys(brandMapping).forEach(brandId => {
+      rowData.push(salesByBrandAndMonth[month][brandId] || 0);
+    });
+    chartData1.push(rowData);
+  });
+
+  const lineChartData = sales ? sales.map((sale, index) => [sale.sale_date, index + 1]) : [];
 
   const options = {
     chart: {
       title: 'Total Sales Over Time',
       subtitle: 'in millions of dollars (USD)'
     },
-    width: 600, // Adjusted width
+    width: 600,
     height: 300,
     hAxis: {
       title: 'Sale Date',
@@ -128,68 +113,43 @@ export default function Sales() {
     },
   };
 
-  const chartData1 = [['Month', ...Object.keys(brandMapping)]];
-
-  // Iterate over salesByMonth to populate chartData1
-  Object.keys(salesByMonth).forEach(month => {
-    const rowData = [month];
-    Object.keys(brandMapping).forEach(brandId => {
-      rowData.push(salesByMonth[month][brandId] || 0);
-    });
-    chartData1.push(rowData);
-  });
-
   return (
     <div className='container'>
       <div className='ml-5 mt-5 pb-7'>
         <Chart
           width={'600px'}
           height={'300px'}
-          chartType="PieChart"
+          chartType="ColumnChart"
           loader={<div>Loading Chart</div>}
-          data={[['Brand', 'Total Sales'], ...chartData]}
+          data={chartData1}
           options={{
-            title: 'Brand Sales',
-            pieHole: 0.4,
+            title: 'Sales by Brand and Month',
+            hAxis: {
+              title: 'Month',
+            },
+            vAxis: {
+              title: 'Total Sales',
+            },
+            series: {
+              0: { color: 'orange', labelInLegend: '4-BMW' },   // 5: Honda
+              1: { color: 'red', labelInLegend: '2-Ford' },    // 2: Toyota
+              2: { color: 'green', labelInLegend: '1-Honda' }, // 3: Audi
+              3: { color: 'purple', labelInLegend: '3-Audi' },  // 4: BMW
+              4: { color: 'blue', labelInLegend: '5-Toyota' }, // 1: Ford
+            },
           }}
-          rootProps={{ 'data-testid': '1' }}
+          rootProps={{ 'data-testid': '3' }}
         />
-        <div className='ml-[-20px] mt-[-40px]'>
-          <ChartColumn />
-        </div>
-       
-      </div>
-      <div className='mt-10'>
-        <h1 className='text-white ml-12 text-xl font-semibold'>Records</h1>
-        <h1 className='text-white ml-12 '>Total sale: {salesCount}</h1>
-        {sales && 
-          <div className="container px-10">
-            <table className=" border w-[600px] rounded-sm">
-              <thead>
-                <tr>
-                  <th className='bg-slate-100 w-[70px]'>ID</th>
-                  <th className='bg-slate-600 w-[200px]'>VIN</th>
-                  <th className='bg-slate-100 w-[170px]'>Customer Buyer</th>
-                  <th className='bg-slate-600 w-[80px]'>Brand</th>
-                  <th className='bg-slate-100 w-[170px]'>Sale Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sales.map((sale, index) => (
-                  <tr className='text-white border py-3 text-center' key={index}>
-                    <td className='text-center'>{sale.id}</td>
-                    <td>{sale.vin}</td>
-                    <td>{sale.name}</td>
-                    <td>{sale.brand_id}</td>
-                    <td>{sale.date}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        }
-      </div>
+        <div className='mt-2'>
 
+        <Chart
+          chartType="LineChart"
+          loader={<div>Loading Chart</div>}
+          data={[['Sale Date', 'Total Sales'], ...lineChartData]}
+          options={options}
+        />
+        </div>
+      </div>
      
     </div>
   );

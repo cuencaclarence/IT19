@@ -16,25 +16,17 @@ function Dealer() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-  useEffect (() => {
-    const fetchCustomers = async () => {
-      const {data, error} = await supabase
-      .from('dealers')
-      .select()
-
-      if (error) {
-        setFetchError('error')
-      }
-
-      if (data) {
-        setdealers(data)
-        setFetchError(null)
-        console.log(data)
-        setDealerCount(data.length)
-      } 
-    }
-    fetchCustomers()
-  }, [])
+    useEffect(() => {
+      fetch('http://127.0.0.1:8000/api/dealersAll')
+        .then(response => response.json())
+        .then(data => {
+          setdealers(data);
+          setDealerCount(data.length)
+        })
+        .catch(error => {
+          console.error('Error fetching customer data:', error);
+        });
+    }, []);
 
 
   const handleSubmit = async (e) => {
@@ -159,7 +151,7 @@ function Dealer() {
           <tbody>
             {dealers.map((dealer, index) => (
               <tr className='text-white border py-3' key={index}>
-                <td className='text-center'>{dealer.dealer_id}</td>
+                <td className='text-center'>{dealer.id}</td>
                 <td className='pl-3'>{dealer.dealer_name}</td>
                 <td className='pl-3'>{dealer.address}</td>
                 <td className='text-center'>{dealer.phone}</td>

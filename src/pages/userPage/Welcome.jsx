@@ -18,22 +18,18 @@ function Welcome() {
 
   const [vehicles, setVehicles] = useState(null)
 
+  
   useEffect(() => {
-    const fetchVehicles = async () => {
-      const {data, error} = await supabase
-      .from('vehicles')
-      .select('Price, model_id(model_name), brand_id(brand_name), color, transmission_type, engine_type')
-      .limit(8)
-
-      if (data) {
-        setVehicles(data)
+    fetch('http://127.0.0.1:8000/api/vehiclesAll')
+      .then(response => response.json())
+      .then(data => {
+        setVehicles(data);
         console.log(data)
-      }
-    }
-
-
-    fetchVehicles()
-  },[])
+      })
+      .catch(error => {
+        console.error('Error fetching customer data:', error);
+      });
+  }, []);
 
   return (
    
@@ -95,8 +91,8 @@ function Welcome() {
             {vehicles && vehicles.map((vehicle, index) => (
               <div className='mx-3 mt-3 shadow-xl rounded-xl' key={index}>
                 <img className='rounded-lg' src={pic} alt=""/>
-                <h1 className='ml-5 mt-3'>Model: {vehicle.model_id.model_name}</h1>
-                <h2 className='ml-5'>{vehicle.brand_id.brand_name}</h2>
+                <h1 className='ml-5 mt-3'>Model: {vehicle.models.model_name}</h1>
+                <h2 className='ml-5'>{vehicle.brand.brand_name}</h2>
                 <div className='border'>
                     <ul className='list'>
                       <li className='box2'><img className='w-8 mr-5' src={automaticIcon} alt="" /> <p>{vehicle.transmission_type}</p></li>
@@ -105,7 +101,7 @@ function Welcome() {
                     </ul>
                 </div>
                 <div className='py-5 px-6 flex justify-between items-center'>
-                  <h2 className='font-semibold text-lg'>${vehicle.Price}</h2>
+                  <h2 className='font-semibold text-lg'>${vehicle.price}</h2>
                   <p className='text-blue-600 font-medium text-[11px] flex items-center'>View Details <img className='ml-2 w-3 h-3' src={arrowIcon} alt="" /></p>
                 </div>
                 
